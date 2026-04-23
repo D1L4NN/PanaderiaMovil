@@ -14,7 +14,7 @@ class App extends StatelessWidget {
     return Provider<AppDatabase>.value(
       value: database,
       child: MaterialApp(
-        title: 'Panadería ERP',
+        title: 'Panaderia ERP',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
