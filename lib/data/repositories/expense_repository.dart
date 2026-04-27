@@ -55,4 +55,12 @@ class ExpenseRepository {
           ..orderBy([(table) => OrderingTerm.desc(table.createdAt)]))
         .get();
   }
+
+  Future<double> getExpensesTotalByDateRange({
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    final expenses = await getExpensesByDateRange(start: start, end: end);
+    return expenses.fold<double>(0, (sum, expense) => sum + expense.amount);
+  }
 }

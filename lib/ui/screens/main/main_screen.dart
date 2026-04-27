@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../dashboard/dashboard_controller.dart';
+import '../dashboard/dashboard_screen.dart';
 import '../expenses/expense_controller.dart';
 import '../expenses/expenses_screen.dart';
 import '../home/home_controller.dart';
@@ -19,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static const _pages = <Widget>[
+    DashboardScreen(),
     HomeScreen(),
     SalesScreen(),
     ExpensesScreen(),
@@ -34,6 +37,10 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            label: 'Dashboard',
+          ),
           NavigationDestination(
             icon: Icon(Icons.inventory_2_outlined),
             label: 'Productos',
@@ -53,8 +60,10 @@ class _MainScreenState extends State<MainScreen> {
           });
 
           if (index == 0) {
-            context.read<HomeController>().loadProducts();
+            context.read<DashboardController>().loadDashboard();
           } else if (index == 1) {
+            context.read<HomeController>().loadProducts();
+          } else if (index == 2) {
             context.read<SalesController>().loadProducts();
           } else {
             context.read<ExpenseController>().loadExpenses();

@@ -72,6 +72,33 @@ class SalesRepository {
         .get();
   }
 
+  Future<double> getSalesTotalByDateRange({
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    final sales = await (_database.select(_database.sales)
+          ..where(
+            (table) =>
+                table.createdAt.isBetweenValues(start, end) &
+                table.isVoided.equals(false),
+          ))
+        .get();
+
+    if (sales.isEmpty) {
+      return 0;
+    }
+
+    final saleIds = sales.map((sale) => sale.id).toList();
+    final items = await (_database.select(_database.saleItems)
+          ..where((table) => table.saleId.isIn(saleIds)))
+        .get();
+
+    return items.fold<double>(
+      0,
+      (sum, item) => sum + (item.quantity * item.unitPrice),
+    );
+  }
+
   Future<SaleWithItems?> getSaleWithItems(int saleId) async {
     final sale = await (_database.select(_database.sales)
           ..where((table) => table.id.equals(saleId)))

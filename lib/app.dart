@@ -6,6 +6,7 @@ import 'data/repositories/expense_repository.dart';
 import 'data/repositories/product_repository.dart';
 import 'data/repositories/sales_repository.dart';
 import 'data/repositories/stock_repository.dart';
+import 'ui/screens/dashboard/dashboard_controller.dart';
 import 'ui/screens/expenses/expense_controller.dart';
 import 'ui/screens/home/home_controller.dart';
 import 'ui/screens/main/main_screen.dart';
@@ -51,6 +52,14 @@ class App extends StatelessWidget {
           create: (context) => ExpenseController(
             expenseRepository: context.read<ExpenseRepository>(),
           )..loadExpenses(),
+        ),
+        ChangeNotifierProvider<DashboardController>(
+          create: (context) => DashboardController(
+            salesRepository: context.read<SalesRepository>(),
+            expenseRepository: context.read<ExpenseRepository>(),
+            productRepository: context.read<ProductRepository>(),
+            stockRepository: context.read<StockRepository>(),
+          )..loadDashboard(),
         ),
       ],
       child: MaterialApp(
