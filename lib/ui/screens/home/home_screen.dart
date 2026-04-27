@@ -135,6 +135,18 @@ class _ProductCard extends StatelessWidget {
   }
 }
 
+class StockAdjustmentRequest {
+  final int productId;
+  final String type;
+  final double quantity;
+
+  const StockAdjustmentRequest({
+    required this.productId,
+    required this.type,
+    required this.quantity,
+  });
+}
+
 Future<void> _showProductDialog(
   BuildContext context, {
   Product? product,
@@ -240,7 +252,7 @@ Future<void> _showStockAdjustmentDialog(
   final controller = context.read<HomeController>();
   var movementType = StockMovementType.entry;
 
-  await showDialog<void>(
+  final adjustmentRequest = await showDialog<StockAdjustmentRequest>(
     context: context,
     builder: (dialogContext) {
       return StatefulBuilder(
@@ -306,15 +318,13 @@ Future<void> _showStockAdjustmentDialog(
                     return;
                   }
 
-                  await controller.adjustStock(
+                  final request = StockAdjustmentRequest(
                     productId: product.id,
                     type: movementType,
                     quantity: double.parse(quantityController.text),
                   );
 
-                  if (dialogContext.mounted) {
-                    Navigator.of(dialogContext).pop();
-                  }
+                  Navigator.of(dialogContext).pop(request);
                 },
                 child: const Text('Guardar'),
               ),
@@ -324,6 +334,14 @@ Future<void> _showStockAdjustmentDialog(
       );
     },
   );
+
+  if (adjustmentRequest != null) {
+    await controller.adjustStock(
+      productId: adjustmentRequest.productId,
+      type: adjustmentRequest.type,
+      quantity: adjustmentRequest.quantity,
+    );
+  }
 }
 
 Future<void> _confirmDeactivateProduct(

@@ -4,7 +4,7 @@ import 'package:panaderia_erp/app.dart';
 import 'package:panaderia_erp/data/database/app_database.dart';
 
 void main() {
-  testWidgets('app starts with the products empty state', (WidgetTester tester) async {
+  testWidgets('app starts with products and sales tabs', (WidgetTester tester) async {
     final database = AppDatabase.forTesting(NativeDatabase.memory());
 
     addTearDown(database.close);
@@ -16,5 +16,7 @@ void main() {
     expect(find.text('Panaderia ERP'), findsOneWidget);
     expect(find.text('No hay productos registrados'), findsOneWidget);
     expect(find.text('Nuevo producto'), findsOneWidget);
+    expect(find.text('Productos'), findsOneWidget);
+    expect(find.text('Ventas'), findsOneWidget);
   });
 }

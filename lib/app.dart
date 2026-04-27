@@ -3,9 +3,11 @@ import 'package:provider/provider.dart';
 
 import 'data/database/app_database.dart';
 import 'data/repositories/product_repository.dart';
+import 'data/repositories/sales_repository.dart';
 import 'data/repositories/stock_repository.dart';
-import 'ui/screens/home/home_screen.dart';
 import 'ui/screens/home/home_controller.dart';
+import 'ui/screens/main/main_screen.dart';
+import 'ui/screens/sales/sales_controller.dart';
 
 class App extends StatelessWidget {
   final AppDatabase database;
@@ -23,10 +25,21 @@ class App extends StatelessWidget {
         Provider<StockRepository>(
           create: (context) => StockRepository(context.read<AppDatabase>()),
         ),
+        Provider<SalesRepository>(
+          create: (context) => SalesRepository(context.read<AppDatabase>()),
+        ),
         ChangeNotifierProvider<HomeController>(
           create: (context) => HomeController(
             productRepository: context.read<ProductRepository>(),
             stockRepository: context.read<StockRepository>(),
+          )..loadProducts(),
+        ),
+        ChangeNotifierProvider<SalesController>(
+          create: (context) => SalesController(
+            productRepository: context.read<ProductRepository>(),
+            stockRepository: context.read<StockRepository>(),
+            salesRepository: context.read<SalesRepository>(),
+            homeController: context.read<HomeController>(),
           )..loadProducts(),
         ),
       ],
@@ -37,7 +50,7 @@ class App extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
           useMaterial3: true,
         ),
-        home: const HomeScreen(),
+        home: const MainScreen(),
       ),
     );
   }
