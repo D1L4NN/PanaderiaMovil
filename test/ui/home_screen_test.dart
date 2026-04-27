@@ -16,6 +16,9 @@ void main() {
     await tester.pump();
     await tester.pump();
 
+    await tester.tap(find.text('Productos'));
+    await tester.pumpAndSettle();
+
     await tester.tap(find.widgetWithText(FloatingActionButton, 'Nuevo producto'));
     await tester.pumpAndSettle();
 
