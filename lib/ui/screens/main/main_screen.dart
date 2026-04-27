@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../expenses/expense_controller.dart';
+import '../expenses/expenses_screen.dart';
 import '../home/home_controller.dart';
 import '../home/home_screen.dart';
 import '../sales/sales_controller.dart';
@@ -19,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   static const _pages = <Widget>[
     HomeScreen(),
     SalesScreen(),
+    ExpensesScreen(),
   ];
 
   @override
@@ -39,6 +42,10 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.point_of_sale_outlined),
             label: 'Ventas',
           ),
+          NavigationDestination(
+            icon: Icon(Icons.receipt_long_outlined),
+            label: 'Egresos',
+          ),
         ],
         onDestinationSelected: (index) {
           setState(() {
@@ -47,8 +54,10 @@ class _MainScreenState extends State<MainScreen> {
 
           if (index == 0) {
             context.read<HomeController>().loadProducts();
-          } else {
+          } else if (index == 1) {
             context.read<SalesController>().loadProducts();
+          } else {
+            context.read<ExpenseController>().loadExpenses();
           }
         },
       ),

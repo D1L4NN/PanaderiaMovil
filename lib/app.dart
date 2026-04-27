@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'data/database/app_database.dart';
+import 'data/repositories/expense_repository.dart';
 import 'data/repositories/product_repository.dart';
 import 'data/repositories/sales_repository.dart';
 import 'data/repositories/stock_repository.dart';
+import 'ui/screens/expenses/expense_controller.dart';
 import 'ui/screens/home/home_controller.dart';
 import 'ui/screens/main/main_screen.dart';
 import 'ui/screens/sales/sales_controller.dart';
@@ -28,6 +30,9 @@ class App extends StatelessWidget {
         Provider<SalesRepository>(
           create: (context) => SalesRepository(context.read<AppDatabase>()),
         ),
+        Provider<ExpenseRepository>(
+          create: (context) => ExpenseRepository(context.read<AppDatabase>()),
+        ),
         ChangeNotifierProvider<HomeController>(
           create: (context) => HomeController(
             productRepository: context.read<ProductRepository>(),
@@ -41,6 +46,11 @@ class App extends StatelessWidget {
             salesRepository: context.read<SalesRepository>(),
             homeController: context.read<HomeController>(),
           )..loadProducts(),
+        ),
+        ChangeNotifierProvider<ExpenseController>(
+          create: (context) => ExpenseController(
+            expenseRepository: context.read<ExpenseRepository>(),
+          )..loadExpenses(),
         ),
       ],
       child: MaterialApp(
