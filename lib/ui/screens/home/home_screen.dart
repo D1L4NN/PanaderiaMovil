@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/database/app_database.dart';
+import '../dashboard/dashboard_screen.dart';
 import 'home_controller.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -96,7 +97,7 @@ class _ProductCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text('Precio: \$${item.product.salePrice.toStringAsFixed(2)}'),
-            Text('Stock actual: ${item.stock.toStringAsFixed(2)}'),
+            Text('Stock actual: ${formatStock(item.stock)}'),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,

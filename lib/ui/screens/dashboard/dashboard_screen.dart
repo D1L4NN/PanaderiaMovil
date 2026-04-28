@@ -29,21 +29,42 @@ class DashboardScreen extends StatelessWidget {
                             title: 'Ingresos del dia',
                             value:
                                 '\$${controller.dayIncome.toStringAsFixed(2)}',
+                            valueColor: Colors.green.shade800,
                           ),
                           _MetricCard(
                             title: 'Egresos del dia',
                             value:
                                 '\$${controller.dayExpenses.toStringAsFixed(2)}',
+                            valueColor: Colors.red.shade800,
                           ),
                           _MetricCard(
                             title: 'Ganancia del dia',
                             value:
                                 '\$${controller.dayProfit.toStringAsFixed(2)}',
+                            valueColor: controller.dayProfit >= 0
+                                ? Colors.green.shade800
+                                : Colors.red.shade800,
                           ),
                           _MetricCard(
-                            title: 'Ventas del mes',
+                            title: 'Ventas de ${controller.currentMonthLabel}',
                             value:
                                 '\$${controller.monthSales.toStringAsFixed(2)}',
+                            valueColor: Colors.green.shade800,
+                          ),
+                          _MetricCard(
+                            title: 'Egresos de ${controller.currentMonthLabel}',
+                            value:
+                                '\$${controller.monthExpenses.toStringAsFixed(2)}',
+                            valueColor: Colors.red.shade800,
+                          ),
+                          _MetricCard(
+                            title:
+                                'Ganancia de ${controller.currentMonthLabel}',
+                            value:
+                                '\$${controller.monthProfit.toStringAsFixed(2)}',
+                            valueColor: controller.monthProfit >= 0
+                                ? Colors.green.shade800
+                                : Colors.red.shade800,
                           ),
                         ],
                       ),
@@ -73,8 +94,19 @@ class DashboardScreen extends StatelessWidget {
                                   'Precio: \$${item.product.salePrice.toStringAsFixed(2)}',
                                 ),
                                 trailing: Text(
-                                  'Stock: ${item.stock.toStringAsFixed(2)}',
+                                  'Stock: ${formatStock(item.stock)}',
+                                  style: TextStyle(
+                                    color: item.stock == 0
+                                        ? Colors.red.shade800
+                                        : null,
+                                    fontWeight: item.stock == 0
+                                        ? FontWeight.w700
+                                        : FontWeight.w500,
+                                  ),
                                 ),
+                                tileColor: item.stock == 0
+                                    ? Colors.red.shade50
+                                    : null,
                               ),
                             ),
                           ),
@@ -91,10 +123,12 @@ class DashboardScreen extends StatelessWidget {
 class _MetricCard extends StatelessWidget {
   final String title;
   final String value;
+  final Color? valueColor;
 
   const _MetricCard({
     required this.title,
     required this.value,
+    this.valueColor,
   });
 
   @override
@@ -114,7 +148,10 @@ class _MetricCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 value,
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: valueColor,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
             ],
           ),
@@ -122,4 +159,8 @@ class _MetricCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String formatStock(double stock) {
+  return stock.toInt().toString();
 }

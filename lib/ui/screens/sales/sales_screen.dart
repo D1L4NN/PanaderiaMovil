@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../dashboard/dashboard_screen.dart';
 import 'sales_controller.dart';
 
 class SalesScreen extends StatelessWidget {
@@ -208,7 +209,7 @@ class _SaleLineCard extends StatelessWidget {
                   'Precio unitario: \$${(productData?.product.salePrice ?? 0).toStringAsFixed(2)}',
                 ),
                 Text(
-                  'Stock disponible: ${(productData?.stock ?? 0).toStringAsFixed(2)}',
+                  'Stock disponible: ${formatStock(productData?.stock ?? 0)}',
                 ),
                 Text(
                   'Subtotal: \$${controller.lineSubtotal(line).toStringAsFixed(2)}',

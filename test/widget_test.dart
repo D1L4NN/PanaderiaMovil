@@ -3,11 +3,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:panaderia_erp/app.dart';
 import 'package:panaderia_erp/data/database/app_database.dart';
 
+import 'helpers/test_locale.dart';
+
 void main() {
   testWidgets('app starts with dashboard, products, sales and expenses tabs', (WidgetTester tester) async {
     final database = AppDatabase.forTesting(NativeDatabase.memory());
 
     addTearDown(database.close);
+    await initializeSpanishLocaleForTests();
 
     await tester.pumpWidget(App(database: database));
     await tester.pump();

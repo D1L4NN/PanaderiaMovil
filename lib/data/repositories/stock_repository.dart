@@ -45,4 +45,28 @@ class StockRepository {
       return total - movement.quantity;
     });
   }
+
+  Future<Map<int, double>> getCurrentStocksForProducts(List<int> productIds) async {
+    if (productIds.isEmpty) return {};
+
+    final movements = await (_database.select(_database.stockMovements)
+          ..where((table) => table.productId.isIn(productIds)))
+        .get();
+
+    final stockByProduct = <int, double>{};
+    for (final id in productIds) {
+      stockByProduct[id] = 0;
+    }
+
+    for (final movement in movements) {
+      final current = stockByProduct[movement.productId] ?? 0;
+      if (movement.type == StockMovementType.entry) {
+        stockByProduct[movement.productId] = current + movement.quantity;
+      } else {
+        stockByProduct[movement.productId] = current - movement.quantity;
+      }
+    }
+
+    return stockByProduct;
+  }
 }

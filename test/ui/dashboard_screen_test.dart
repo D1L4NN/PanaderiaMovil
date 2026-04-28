@@ -7,6 +7,8 @@ import 'package:panaderia_erp/data/repositories/product_repository.dart';
 import 'package:panaderia_erp/data/repositories/sales_repository.dart';
 import 'package:panaderia_erp/data/repositories/stock_repository.dart';
 
+import '../helpers/test_locale.dart';
+
 void main() {
   testWidgets('dashboard shows sales, expenses and low stock summary', (
     WidgetTester tester,
@@ -18,6 +20,7 @@ void main() {
     final expenseRepository = ExpenseRepository(database);
 
     addTearDown(database.close);
+    await initializeSpanishLocaleForTests();
 
     final productId = await productRepository.createProduct(
       name: 'Pan de casa',
@@ -57,8 +60,10 @@ void main() {
     expect(find.text('\$1.50'), findsWidgets);
     expect(find.text('Ganancia del dia'), findsOneWidget);
     expect(find.text('\$2.50'), findsWidgets);
-    expect(find.text('Ventas del mes'), findsOneWidget);
+    expect(find.textContaining('Ventas de '), findsOneWidget);
+    expect(find.textContaining('Egresos de '), findsOneWidget);
+    expect(find.textContaining('Ganancia de '), findsOneWidget);
     expect(find.text('Pan de casa'), findsOneWidget);
-    expect(find.text('Stock: 3.00'), findsOneWidget);
+    expect(find.text('Stock: 3'), findsOneWidget);
   });
 }
