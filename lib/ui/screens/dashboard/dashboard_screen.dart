@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../reports/reports_screen.dart';
 import 'dashboard_controller.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -13,6 +14,16 @@ class DashboardScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Dashboard'),
+            actions: [
+              IconButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ReportsScreen()),
+                ),
+                icon: const Icon(Icons.bar_chart_outlined),
+                tooltip: 'Reportes',
+              ),
+            ],
           ),
           body: controller.isLoading
               ? const Center(child: CircularProgressIndicator())

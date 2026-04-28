@@ -115,6 +115,41 @@ class SalesRepository {
     return SaleWithItems(sale: sale, items: items);
   }
 
+  Future<List<SaleWithItems>> getSalesWithItemsByDateRange({
+    required DateTime start,
+    required DateTime end,
+  }) async {
+    final sales = await (_database.select(_database.sales)
+          ..where(
+            (table) =>
+                table.createdAt.isBetweenValues(start, end) &
+                table.isVoided.equals(false),
+          )
+          ..orderBy([(table) => drift.OrderingTerm.desc(table.createdAt)]))
+        .get();
+
+    if (sales.isEmpty) {
+      return [];
+    }
+
+    final saleIds = sales.map((s) => s.id).toList();
+    final items = await (_database.select(_database.saleItems)
+          ..where((table) => table.saleId.isIn(saleIds)))
+        .get();
+
+    final itemsBySaleId = <int, List<SaleItem>>{};
+    for (final item in items) {
+      itemsBySaleId.putIfAbsent(item.saleId, () => []).add(item);
+    }
+
+    return sales.map((sale) {
+      return SaleWithItems(
+        sale: sale,
+        items: itemsBySaleId[sale.id] ?? [],
+      );
+    }).toList();
+  }
+
   Future<bool> voidSale(int saleId) {
     return _database.transaction(() async {
       final saleWithItems = await getSaleWithItems(saleId);

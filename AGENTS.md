@@ -33,4 +33,7 @@ Flutter ERP móvil para panadería — offline-first con Drift/SQLite + Provider
 - Tests DB: `AppDatabase.forTesting(NativeDatabase.memory())`
 - Widget tests: llamar `initializeSpanishLocaleForTests()` de `test/helpers/test_locale.dart` antes de pump
 
+## Fase en desarrollo
+- Ninguna — fase 7 (reportes) completada
+
 
