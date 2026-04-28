@@ -12,6 +12,7 @@ enum ReportPeriod { day, month, year, custom }
 class ReportsController extends ChangeNotifier {
   final SalesRepository _salesRepository;
   final ExpenseRepository _expenseRepository;
+  final ProductRepository _productRepository;
   final ExcelExporter _excelExporter;
   final PdfExporter _pdfExporter;
 
@@ -23,6 +24,7 @@ class ReportsController extends ChangeNotifier {
     required PdfExporter pdfExporter,
   })  : _salesRepository = salesRepository,
         _expenseRepository = expenseRepository,
+        _productRepository = productRepository,
         _excelExporter = excelExporter,
         _pdfExporter = pdfExporter;
 
@@ -36,6 +38,7 @@ class ReportsController extends ChangeNotifier {
   double _totalExpenses = 0;
   double _profit = 0;
   String _periodLabel = '';
+  Map<int, String> _productNames = {};
 
   bool get isLoading => _isLoading;
   bool get hasExported => _hasExported;
@@ -47,6 +50,7 @@ class ReportsController extends ChangeNotifier {
   double get totalExpenses => _totalExpenses;
   double get profit => _profit;
   String get periodLabel => _periodLabel;
+  Map<int, String> get productNames => _productNames;
 
   Future<void> loadReport() async {
     _isLoading = true;
@@ -99,6 +103,21 @@ class ReportsController extends ChangeNotifier {
     );
 
     _profit = _totalSales - _totalExpenses;
+
+    final productIds = <int>{};
+    for (final saleWithItems in _sales) {
+      for (final item in saleWithItems.items) {
+        productIds.add(item.productId);
+      }
+    }
+
+    _productNames = {};
+    for (final id in productIds) {
+      final product = await _productRepository.getProductById(id);
+      if (product != null) {
+        _productNames[id] = product.name;
+      }
+    }
 
     _isLoading = false;
     notifyListeners();

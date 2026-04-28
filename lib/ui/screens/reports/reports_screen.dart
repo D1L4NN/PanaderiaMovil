@@ -202,7 +202,10 @@ class _ReportContent extends StatelessWidget {
             itemCount: controller.sales.length,
             itemBuilder: (context, index) {
               final saleWithItems = controller.sales[index];
-              return _SaleCard(saleWithItems: saleWithItems);
+              return _SaleCard(
+                saleWithItems: saleWithItems,
+                productNames: controller.productNames,
+              );
             },
           ),
         ),
@@ -286,8 +289,12 @@ class _SummaryChip extends StatelessWidget {
 
 class _SaleCard extends StatelessWidget {
   final SaleWithItems saleWithItems;
+  final Map<int, String> productNames;
 
-  const _SaleCard({required this.saleWithItems});
+  const _SaleCard({
+    required this.saleWithItems,
+    required this.productNames,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -310,9 +317,10 @@ class _SaleCard extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         children: items.map((item) {
+          final productName = productNames[item.productId] ?? 'Producto #${item.productId}';
           return ListTile(
             dense: true,
-            title: Text('Producto #${item.productId}'),
+            title: Text(productName),
             subtitle: Text(
               'Cant: ${item.quantity.toStringAsFixed(2)} × \$${item.unitPrice.toStringAsFixed(2)}',
             ),

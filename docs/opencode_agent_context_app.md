@@ -13,6 +13,8 @@ Lo siguiente es lo ya implementado en las fases:
 - Dashboard de resumen operativo base (fase 6, de aqui en adelante seguimos desarrollando las fases siguientes)
 - Fix N+1 en dashboard: batch query para stock de productos (1 consulta en vez de N)
 - Fase 7: Reportes de ventas con filtros (dia/mes/año/rango) y exportacion a Excel (CSV) y PDF
+- Fix auto-load en ReportsScreen: carga datos al abrir sin esperar click de filtro
+- Mejora en reportes: mostrar nombre de producto en detalle de venta en vez de "Producto #N"
 
 ---
 
