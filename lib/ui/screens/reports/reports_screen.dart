@@ -14,7 +14,11 @@ class ReportsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => _buildController(context),
+      create: (context) {
+        final controller = _buildController(context);
+        Future.microtask(() => controller.loadReport());
+        return controller;
+      },
       child: Consumer<ReportsController>(
         builder: (context, controller, child) {
           return Scaffold(
