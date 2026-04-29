@@ -15,6 +15,7 @@ Lo siguiente es lo ya implementado en las fases:
 - Fase 7: Reportes de ventas con filtros (dia/mes/año/rango) y exportacion a Excel (CSV) y PDF
 - Fix auto-load en ReportsScreen: carga datos al abrir sin esperar click de filtro
 - Mejora en reportes: mostrar nombre de producto en detalle de venta en vez de "Producto #N"
+- Mejora del archivo `Ajustes-en-dashboard.md` implementada.
 
 ---
 

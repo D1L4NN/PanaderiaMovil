@@ -18,22 +18,22 @@ Flutter ERP móvil para panadería — offline-first con Drift/SQLite + Provider
 - Principios DB: ventas no se borran (solo anulan) · reportes se calculan · stock por eventos
 
 ## Contexto Global
-- En el archivo `docs/README_CONTEXT.md`
+- En el archivo `docs/README_CONTEXT.md` se muestra el contexto global del proyecto.
 
 ## Workflow de fases
-1. Leer archivo `Fases/Fase-X-*.md` o `docs/Mejoras/*.md`
+1. Leer archivo `Fases/Fase-X-*.md` o `docs/Mejoras/*.md`, tambien leer `docs/opencode_agent_context_app.md` para que tengas contexto de lo que ya haz implementado.
 2. Implementar SOLO lo que dice el documento — nada más
 3. Tras implementar, agregar UNA línea a `docs/opencode_agent_context_app.md` describiendo lo hecho
 4. Guardar el plan de fase en `Fases/` como `.md`
 5. Verificar: `build_runner` → `flutter analyze` → `flutter test`
+
+## Reglas importantes
+- Siempre que se pida crear un plan para una posible mejora, que se cree en la carpeta de `docs\Mejoras` con el prefijo `posible_mejora-[nombre-de-la-mejora]`
 
 ## Drift
 - `lib/data/database/app_database.g.dart` es GENERADO — no editar
 - Tablas: `Products`, `Sales`, `SaleItems`, `Expenses`, `StockMovements`
 - Tests DB: `AppDatabase.forTesting(NativeDatabase.memory())`
 - Widget tests: llamar `initializeSpanishLocaleForTests()` de `test/helpers/test_locale.dart` antes de pump
-
-## Fase en desarrollo
-- Ninguna — fase 7 (reportes) completada
 
 
