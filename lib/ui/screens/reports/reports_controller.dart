@@ -155,7 +155,7 @@ class ReportsController extends ChangeNotifier {
       profit: _profit,
       periodLabel: _periodLabel,
     );
-    await _pdfExporter.export(report);
+    await _pdfExporter.export(report, _productNames);
     _hasExported = true;
     notifyListeners();
   }

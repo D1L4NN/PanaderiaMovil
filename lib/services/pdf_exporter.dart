@@ -10,7 +10,7 @@ import 'excel_exporter.dart';
 class PdfExporter {
   PdfExporter();
 
-  Future<void> export(ReportData report) async {
+  Future<void> export(ReportData report, Map<int, String> productNames) async {
     final pdf = pw.Document();
 
     pdf.addPage(
@@ -44,7 +44,7 @@ class PdfExporter {
             pw.Header(level: 1, child: pw.Text('Detalle de Ventas')),
             pw.SizedBox(height: 8),
             ...report.sales.map((saleWithItems) {
-              return _buildSaleBlock(saleWithItems);
+              return _buildSaleBlock(saleWithItems, productNames);
             }),
             pw.SizedBox(height: 16),
             pw.Divider(),
@@ -63,7 +63,7 @@ class PdfExporter {
     );
   }
 
-  pw.Widget _buildSaleBlock(SaleWithItems saleWithItems) {
+  pw.Widget _buildSaleBlock(SaleWithItems saleWithItems, Map<int, String> productNames) {
     final sale = saleWithItems.sale;
     final items = saleWithItems.items;
 
@@ -114,7 +114,7 @@ class PdfExporter {
                   children: [
                     pw.Padding(
                       padding: const pw.EdgeInsets.all(4),
-                      child: pw.Text(_getProductName(item)),
+                      child: pw.Text(_getProductName(item, productNames)),
                     ),
                     pw.Padding(
                       padding: const pw.EdgeInsets.all(4),
@@ -212,8 +212,8 @@ class PdfExporter {
     );
   }
 
-  String _getProductName(SaleItem item) {
-    return item.productId.toString();
+  String _getProductName(SaleItem item, Map<int, String> productNames) {
+    return productNames[item.productId] ?? 'Producto #${item.productId}';
   }
 
   double _calculateSaleTotal(List<SaleItem> items) {

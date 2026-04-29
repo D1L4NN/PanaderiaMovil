@@ -16,6 +16,7 @@ Lo siguiente es lo ya implementado en las fases:
 - Fix auto-load en ReportsScreen: carga datos al abrir sin esperar click de filtro
 - Mejora en reportes: mostrar nombre de producto en detalle de venta en vez de "Producto #N"
 - Mejora del archivo `Ajustes-en-dashboard.md` implementada.
+- Mejora en PDF exportado: mostrar nombre del producto en detalle de venta en vez de ID
 
 ---
 
