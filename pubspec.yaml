@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  csv: ^6.0.0
+  excel: ^4.0.6
   pdf: ^3.11.0
   printing: ^5.13.0
   share_plus: ^10.0.0

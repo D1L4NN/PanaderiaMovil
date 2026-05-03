@@ -18,6 +18,7 @@ Lo siguiente es lo ya implementado en las fases:
 - Mejora del archivo `Ajustes-en-dashboard.md` implementada.
 - Mejora en PDF exportado: mostrar nombre del producto en detalle de venta en vez de ID
 - Mejora del dashboard responsivo y centrado implementada.
+- Mejora en Excel exportado: generar XLSX con colores, bordes y secciones visuales.
 
 ---
 
