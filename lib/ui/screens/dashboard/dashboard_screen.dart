@@ -32,53 +32,7 @@ class DashboardScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      Wrap(
-                        spacing: 12,
-                        runSpacing: 12,
-                        children: [
-                          _MetricCard(
-                            title: 'Ingresos del dia',
-                            value:
-                                '\$${controller.dayIncome.toStringAsFixed(2)}',
-                            valueColor: Colors.green.shade800,
-                          ),
-                          _MetricCard(
-                            title: 'Egresos del dia',
-                            value:
-                                '\$${controller.dayExpenses.toStringAsFixed(2)}',
-                            valueColor: Colors.red.shade800,
-                          ),
-                          _MetricCard(
-                            title: 'Ganancia del dia',
-                            value:
-                                '\$${controller.dayProfit.toStringAsFixed(2)}',
-                            valueColor: controller.dayProfit >= 0
-                                ? Colors.green.shade800
-                                : Colors.red.shade800,
-                          ),
-                          _MetricCard(
-                            title: 'Ventas de ${controller.currentMonthLabel}',
-                            value:
-                                '\$${controller.monthSales.toStringAsFixed(2)}',
-                            valueColor: Colors.green.shade800,
-                          ),
-                          _MetricCard(
-                            title: 'Egresos de ${controller.currentMonthLabel}',
-                            value:
-                                '\$${controller.monthExpenses.toStringAsFixed(2)}',
-                            valueColor: Colors.red.shade800,
-                          ),
-                          _MetricCard(
-                            title:
-                                'Ganancia de ${controller.currentMonthLabel}',
-                            value:
-                                '\$${controller.monthProfit.toStringAsFixed(2)}',
-                            valueColor: controller.monthProfit >= 0
-                                ? Colors.green.shade800
-                                : Colors.red.shade800,
-                          ),
-                        ],
-                      ),
+                      _MetricsGrid(controller: controller),
                       const SizedBox(height: 24),
                       Text(
                         'Productos con stock bajo',
@@ -131,34 +85,147 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
+class _MetricsGrid extends StatelessWidget {
+  static const double _spacing = 12;
+  static const double _minCardWidth = 150;
+  static const double _maxCardWidth = 190;
+
+  final DashboardController controller;
+
+  const _MetricsGrid({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    final metrics = [
+      _MetricCardData(
+        title: 'Ingresos del dia',
+        value: '\$${controller.dayIncome.toStringAsFixed(2)}',
+        valueColor: Colors.green.shade800,
+      ),
+      _MetricCardData(
+        title: 'Egresos del dia',
+        value: '\$${controller.dayExpenses.toStringAsFixed(2)}',
+        valueColor: Colors.red.shade800,
+      ),
+      _MetricCardData(
+        title: 'Ganancia del dia',
+        value: '\$${controller.dayProfit.toStringAsFixed(2)}',
+        valueColor: controller.dayProfit >= 0
+            ? Colors.green.shade800
+            : Colors.red.shade800,
+      ),
+      _MetricCardData(
+        title: 'Ventas de ${controller.currentMonthLabel}',
+        value: '\$${controller.monthSales.toStringAsFixed(2)}',
+        valueColor: Colors.green.shade800,
+      ),
+      _MetricCardData(
+        title: 'Egresos de ${controller.currentMonthLabel}',
+        value: '\$${controller.monthExpenses.toStringAsFixed(2)}',
+        valueColor: Colors.red.shade800,
+      ),
+      _MetricCardData(
+        title: 'Ganancia de ${controller.currentMonthLabel}',
+        value: '\$${controller.monthProfit.toStringAsFixed(2)}',
+        valueColor: controller.monthProfit >= 0
+            ? Colors.green.shade800
+            : Colors.red.shade800,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableWidth = constraints.maxWidth;
+        final columns = _columnCountForWidth(availableWidth);
+        final totalSpacing = _spacing * (columns - 1);
+        final rawCardWidth = (availableWidth - totalSpacing) / columns;
+        final cardWidth = rawCardWidth.clamp(_minCardWidth, _maxCardWidth);
+        final gridWidth = (cardWidth * columns) + totalSpacing;
+
+        return Center(
+          child: SizedBox(
+            width: gridWidth,
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              spacing: _spacing,
+              runSpacing: _spacing,
+              children: metrics
+                  .map(
+                    (metric) => _MetricCard(
+                      title: metric.title,
+                      value: metric.value,
+                      valueColor: metric.valueColor,
+                      width: cardWidth,
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  int _columnCountForWidth(double width) {
+    if (width >= (_minCardWidth * 3) + (_spacing * 2)) {
+      return 3;
+    }
+
+    if (width >= (_minCardWidth * 2) + _spacing) {
+      return 2;
+    }
+
+    return 1;
+  }
+}
+
+class _MetricCardData {
+  final String title;
+  final String value;
+  final Color valueColor;
+
+  const _MetricCardData({
+    required this.title,
+    required this.value,
+    required this.valueColor,
+  });
+}
+
 class _MetricCard extends StatelessWidget {
   final String title;
   final String value;
   final Color? valueColor;
+  final double width;
 
   const _MetricCard({
     required this.title,
     required this.value,
+    required this.width,
     this.valueColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 170,
+      width: width,
+      height: 118,
       child: Card(
+        margin: EdgeInsets.zero,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 12),
               Text(
                 value,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: valueColor,
                       fontWeight: FontWeight.w700,

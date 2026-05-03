@@ -17,6 +17,7 @@ Lo siguiente es lo ya implementado en las fases:
 - Mejora en reportes: mostrar nombre de producto en detalle de venta en vez de "Producto #N"
 - Mejora del archivo `Ajustes-en-dashboard.md` implementada.
 - Mejora en PDF exportado: mostrar nombre del producto en detalle de venta en vez de ID
+- Mejora del dashboard responsivo y centrado implementada.
 
 ---
 

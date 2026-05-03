@@ -18,7 +18,7 @@ Flutter ERP móvil para panadería — offline-first con Drift/SQLite + Provider
 - Principios DB: ventas no se borran (solo anulan) · reportes se calculan · stock por eventos
 
 ## Contexto Global
-- En el archivo `docs/README_CONTEXT.md` se muestra el contexto global del proyecto.
+- En el archivo `docs/README_CONTEX.md` se muestra el contexto global del proyecto.
 
 ## Workflow de fases
 1. Leer archivo `Fases/Fase-X-*.md` o `docs/Mejoras/*.md`, tambien leer `docs/opencode_agent_context_app.md` para que tengas contexto de lo que ya haz implementado.
