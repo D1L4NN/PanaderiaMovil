@@ -88,49 +88,98 @@ class _ProductCard extends StatelessWidget {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              item.product.name,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            Text('Precio: \$${item.product.salePrice.toStringAsFixed(2)}'),
-            Text('Stock actual: ${formatStock(item.stock)}'),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final shouldStack = constraints.maxWidth < 420;
+
+            if (shouldStack) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _ProductDetails(item: item),
+                  const SizedBox(height: 12),
+                  _ProductActions(item: item),
+                ],
+              );
+            }
+
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                OutlinedButton.icon(
-                  onPressed: () => _showProductDialog(
-                    context,
-                    product: item.product,
-                  ),
-                  icon: const Icon(Icons.edit_outlined),
-                  label: const Text('Editar'),
-                ),
-                OutlinedButton.icon(
-                  onPressed: () => _showStockAdjustmentDialog(
-                    context,
-                    product: item.product,
-                  ),
-                  icon: const Icon(Icons.tune),
-                  label: const Text('Ajustar stock'),
-                ),
-                OutlinedButton.icon(
-                  onPressed: () => _confirmDeactivateProduct(
-                    context,
-                    product: item.product,
-                  ),
-                  icon: const Icon(Icons.visibility_off_outlined),
-                  label: const Text('Desactivar'),
-                ),
+                Expanded(child: _ProductDetails(item: item)),
+                const SizedBox(width: 12),
+                _ProductActions(item: item),
               ],
-            ),
-          ],
+            );
+          },
         ),
+      ),
+    );
+  }
+}
+
+class _ProductDetails extends StatelessWidget {
+  final ProductStockViewData item;
+
+  const _ProductDetails({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          item.product.name,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Text('Precio: \$${item.product.salePrice.toStringAsFixed(2)}'),
+        Text('Stock actual: ${formatStock(item.stock)}'),
+      ],
+    );
+  }
+}
+
+class _ProductActions extends StatelessWidget {
+  final ProductStockViewData item;
+
+  const _ProductActions({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 170,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          OutlinedButton.icon(
+            onPressed: () => _showProductDialog(
+              context,
+              product: item.product,
+            ),
+            icon: const Icon(Icons.edit_outlined),
+            label: const Text('Editar'),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: () => _showStockAdjustmentDialog(
+              context,
+              product: item.product,
+            ),
+            icon: const Icon(Icons.tune),
+            label: const Text('Ajustar stock'),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            onPressed: () => _confirmDeactivateProduct(
+              context,
+              product: item.product,
+            ),
+            icon: const Icon(Icons.visibility_off_outlined),
+            label: const Text('Desactivar'),
+          ),
+        ],
       ),
     );
   }

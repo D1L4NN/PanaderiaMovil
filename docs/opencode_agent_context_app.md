@@ -17,6 +17,7 @@ Lo siguiente es lo ya implementado en las fases:
 - Mejora en reportes: mostrar nombre de producto en detalle de venta en vez de "Producto #N"
 - Mejora del archivo `Ajustes-en-dashboard.md` implementada.
 - Mejora en PDF exportado: mostrar nombre del producto en detalle de venta en vez de ID
+- Mejora en Productos: acciones (Editar/Ajustar stock/Desactivar) movidas a columna derecha con layout responsive
 - Mejora del dashboard responsivo y centrado implementada.
 - Mejora en Excel exportado: generar XLSX con colores, bordes y secciones visuales.
 - mejora implementada: eliminacion definitiva de egresos desde interfaz con confirmacion, soporte en controlador/repositorio y pruebas.
