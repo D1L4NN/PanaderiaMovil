@@ -1,6 +1,6 @@
 ## opencode_agent_content_app.md
 
-Se implementaron las fases que puedes ver en la carpeta llamada Fases, tenemos avanzado hasta la fase 6 que fue un dashboard.
+
 
 ---
 ## Lo que ya esta implementado:
@@ -19,6 +19,7 @@ Lo siguiente es lo ya implementado en las fases:
 - Mejora en PDF exportado: mostrar nombre del producto en detalle de venta en vez de ID
 - Mejora del dashboard responsivo y centrado implementada.
 - Mejora en Excel exportado: generar XLSX con colores, bordes y secciones visuales.
+- mejora implementada: eliminacion definitiva de egresos desde interfaz con confirmacion, soporte en controlador/repositorio y pruebas.
 
 ---
 

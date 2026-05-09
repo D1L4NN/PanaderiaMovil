@@ -49,7 +49,13 @@ class ExpensesScreen extends StatelessWidget {
                             ...controller.expenses.map(
                               (expense) => Padding(
                                 padding: const EdgeInsets.only(bottom: 12),
-                                child: _ExpenseCard(expense: expense),
+                                child: _ExpenseCard(
+                                  expense: expense,
+                                  onEdit: () =>
+                                      _showExpenseDialog(context, expense: expense),
+                                  onDelete: () =>
+                                      _confirmDeleteExpense(context, expense),
+                                ),
                               ),
                             ),
                           ],
@@ -118,8 +124,14 @@ class _ExpenseMessageBanner extends StatelessWidget {
 
 class _ExpenseCard extends StatelessWidget {
   final Expense expense;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
-  const _ExpenseCard({required this.expense});
+  const _ExpenseCard({
+    required this.expense,
+    required this.onEdit,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -139,13 +151,52 @@ class _ExpenseCard extends StatelessWidget {
               Text('Notas: ${expense.notes}'),
           ],
         ),
-        trailing: IconButton(
-          onPressed: () => _showExpenseDialog(context, expense: expense),
-          icon: const Icon(Icons.edit_outlined),
-          tooltip: 'Editar egreso',
+        trailing: Wrap(
+          spacing: 4,
+          children: [
+            IconButton(
+              onPressed: onEdit,
+              icon: const Icon(Icons.edit_outlined),
+              tooltip: 'Editar egreso',
+            ),
+            IconButton(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete_outline),
+              tooltip: 'Eliminar egreso',
+            ),
+          ],
         ),
       ),
     );
+  }
+}
+
+Future<void> _confirmDeleteExpense(BuildContext context, Expense expense) async {
+  final controller = context.read<ExpenseController>();
+  final shouldDelete = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) {
+      return AlertDialog(
+        title: const Text('Eliminar egreso'),
+        content: const Text(
+          'Esta accion es irreversible. El egreso se eliminara definitivamente.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Eliminar'),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (shouldDelete == true) {
+    await controller.deleteExpense(id: expense.id);
   }
 }
 

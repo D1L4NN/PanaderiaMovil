@@ -19,3 +19,6 @@ build/
 **/android/app/release
 
 # Drift generated files are tracked selectively when needed
+docs/
+Fases/
+Mejoras/

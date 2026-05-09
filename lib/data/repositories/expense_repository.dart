@@ -44,6 +44,13 @@ class ExpenseRepository {
     return rowsAffected > 0;
   }
 
+  Future<bool> deleteExpense({required int id}) async {
+    final rowsAffected = await (_database.delete(_database.expenses)
+          ..where((table) => table.id.equals(id)))
+        .go();
+    return rowsAffected > 0;
+  }
+
   Future<List<Expense>> getExpensesByDateRange({
     required DateTime start,
     required DateTime end,

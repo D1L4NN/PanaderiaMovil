@@ -84,6 +84,14 @@ class ExpenseController extends ChangeNotifier {
     await loadExpenses();
   }
 
+  Future<void> deleteExpense({required int id}) async {
+    final deleted = await _expenseRepository.deleteExpense(id: id);
+    _message = deleted
+        ? 'Egreso eliminado correctamente'
+        : 'No se pudo eliminar el egreso';
+    await loadExpenses();
+  }
+
   Future<void> applyFilter({
     required DateTime start,
     required DateTime end,
